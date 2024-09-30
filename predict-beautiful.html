@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产率预测</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        select, input, button {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px 0;
+            width: 200px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #007bff;
+        }
+    </style>
+    <script>
+        function calculateYield() {
+            const ratio = document.getElementById("ratio").value;
+            const temperature = parseFloat(document.getElementById("temperature").value);
+            let yieldValue;
+
+            switch (ratio) {
+                case "1:1.5":
+                    yieldValue = 72.01 + 0.80 * Math.exp(-temperature / 131.85);
+                    break;
+                case "1:2":
+                    yieldValue = 79.43 + 2.76 * Math.exp(-temperature / 0.4);
+                    break;
+                case "6:7":
+                    yieldValue = 74 + 0.69 * Math.exp(-temperature / 131.58);
+                    break;
+                default:
+                    yieldValue = "请选择比例";
+            }
+
+            document.getElementById("result").innerText = `预测产率: ${yieldValue.toFixed(2)}%`;
+        }
+    </script>
+</head>
+<body>
+    <h1>预测产率</h1>
+    <label for="ratio">选择比例:</label>
+    <select id="ratio">
+        <option value="1:1.5">1:1.5</option>
+        <option value="1:2">1:2</option>
+        <option value="6:7">6:7</option>
+    </select>
+
+    <label for="temperature">输入温度:</label>
+    <input type="number" id="temperature" placeholder="请输入温度" />
+
+    <button onclick="calculateYield()">计算产率</button>
+
+    <h2 id="result"></h2>
+</body>
+</html>

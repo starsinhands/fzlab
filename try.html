@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Drag and Drop</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			#imgDiv, #containDiv {
+				width: 400px;
+				height: 220px;
+				margin: 0 auto;
+				border: 1px solid;
+				position: relative;
+			}
+			#imgDiv {
+				border-color: red;
+			}
+			#containDiv {
+				border-color: blue;
+				margin-top: 5px;
+			}
+			img {
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				cursor: grab;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			window.onload = function () {
+				// 红色框
+				var imgDiv = document.createElement("div");
+				imgDiv.id = "imgDiv";
+				document.body.appendChild(imgDiv);
+
+				// 创建三张图片
+				for (var i = 1; i < 4; i++) {
+					var objImg = document.createElement("img");
+					objImg.src = "img/" + i + ".jpg";
+					objImg.draggable = true;
+					objImg.id = i;
+					objImg.ondragstart = function (e) {
+						var objID = e.target.id;
+						e.dataTransfer.setData("ID", objID);
+					};
+					imgDiv.appendChild(objImg);
+				}
+
+				// 蓝色框
+				var containDiv = document.createElement("div");
+				containDiv.id = "containDiv";
+				containDiv.ondragenter = function (e) {
+					e.preventDefault();
+				};
+				containDiv.ondragover = function (e) {
+					e.preventDefault();
+				};
+				containDiv.ondrop = function (e) {
+					e.preventDefault();
+
+					// 获取拖动的图片
+					var objId = e.dataTransfer.getData("ID");
+					var obj = document.getElementById(objId);
+
+					// 计算鼠标相对蓝色框的位置
+					var offsetX = e.offsetX - obj.width / 2;
+					var offsetY = e.offsetY - obj.height / 2;
+
+					// 将图片的位置更新到鼠标松开的位置
+					obj.style.left = offsetX + "px";
+					obj.style.top = offsetY + "px";
+
+					// 将图片添加到蓝色框内
+					containDiv.appendChild(obj);
+				};
+				document.body.appendChild(containDiv);
+			};
+		</script>
+	</body>
+</html>

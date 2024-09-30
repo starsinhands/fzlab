@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24点数轴</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    .number-line {
+        position: relative;
+        width: 80%;
+        height: 50px;
+        border-top: 2px solid black;
+        margin-bottom: 20px;
+    }
+
+    .ticks {
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    .tick {
+        position: relative;
+        width: 0;
+        height: 10px;
+        border-left: 1px solid black;
+        text-align: center;
+    }
+
+    .highlight {
+        position: absolute;
+        background-color: rgba(255, 0, 0, 0.3);
+        height: 20px; /* 调整为一般高度 */
+        display: none; /* 默认隐藏 */
+        top: -10px; /*使其居中于数轴*/
+    }
+</style>
+<script>
+    const highlights = [];
+
+    function setMarkers() {
+        const highlightContainer = document.querySelector('.number-line');
+        const startPosition = prompt("请输入起始点（0-24）:");
+        const endPosition = prompt("请输入结束点（0-24）:");
+
+        if (startPosition >= 0 && startPosition <= 24 && endPosition >= 0 && endPosition <= 24) {
+            const highlight = document.createElement('div');
+            highlight.className = 'highlight';
+
+            const startLeft = (startPosition) * (100 / 24);
+            const endLeft = (endPosition - 1) * (100 / 24); // 调整为结束点减一
+            highlight.style.left = `${startLeft}%`;
+            highlight.style.width = `${endLeft - startLeft + (100 / 24)}%`; // 添加宽度
+            highlightContainer.appendChild(highlight);
+            highlights.push(highlight); // 保存高亮区域
+            highlight.style.display = 'block'; // 显示高亮区间
+        } else {
+            alert("起始点或结束点超出范围！");
+        }
+    }
+</script>
+<body>
+    <div class="number-line">
+        <div class="ticks">
+            <!-- 生成0到24的刻度 -->
+            <script>
+                for (let i = 0; i <= 24; i++) {
+                    document.write(`<div class="tick">${i}</div>`);
+                }
+            </script>
+        </div>
+    </div>
+    <button onclick="setMarkers()">标记起始点和结束点</button>
+</body>
+</html>
